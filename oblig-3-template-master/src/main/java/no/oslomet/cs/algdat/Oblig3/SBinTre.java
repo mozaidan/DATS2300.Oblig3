@@ -1,12 +1,11 @@
 package no.oslomet.cs.algdat.Oblig3;
 
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class SBinTre<T> {
+
+
     private static final class Node<T>   // en indre nodeklasse
     {
         private T verdi;                   // nodens verdi
@@ -112,7 +111,9 @@ public class SBinTre<T> {
         return true;                             // vellykket innlegging
     }
 
-
+    public boolean fjern(T verdi) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
 
     public int fjernAlle(T verdi) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
@@ -124,14 +125,17 @@ public class SBinTre<T> {
         int antallDuplikater = 0;
 
         while (p != null) {
-            int cmp = comp.compare(p.verdi, verdi); // Sammenligner mellom den gitt verdien og p verdien
+            int cmp = comp.compare(verdi, p.verdi); // Sammenligner mellom den gitt verdien og p verdien
             if (cmp < 0) p = p.venstre; // Umulig at like eller større verdier kommer til venstre i binæretrær
             else {
+                p = p.hoyre; // Verdien på høyre siden kan alltid være større eller lik.
                 if (cmp == 0)       // Ellers hvis cmp lik 0 legger vi til at verdien har duplikater i treet
                     antallDuplikater++;
             }
+
         }
         return antallDuplikater; // returnerer antall forekomster av verdier i treet
+
     }
 
 
@@ -140,11 +144,25 @@ public class SBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+       Objects.requireNonNull(p);
+
+        while (true)
+        {
+            if (p.venstre != null) p = p.venstre;
+            else if (p.hoyre != null) p = p.hoyre;
+            else return p;
+        }
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (p.forelder == null) return null;
+
+        if (p == p.forelder.hoyre)
+            return p.forelder;
+        else if (p.forelder.hoyre == null)
+            return p.forelder;
+        else return førstePostorden(p.forelder.hoyre);
+
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
