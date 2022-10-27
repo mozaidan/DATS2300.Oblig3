@@ -102,9 +102,6 @@ public class SBinTre<T> {
             }
         }
 
-
-        // p er nå null, dvs. ute av treet, q er den siste vi passerte
-
         p = new Node<>(verdi, q);                   // oppretter en ny node
 
         if (q == null) rot = p;                  // p blir rotnode
@@ -115,17 +112,28 @@ public class SBinTre<T> {
         return true;                             // vellykket innlegging
     }
 
-    public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+
 
     public int fjernAlle(T verdi) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     public int antall(T verdi) {
-        return 0;
+
+        Node<T> p = rot;
+        int antallDuplikater = 0;
+
+        while (p != null) {
+            int cmp = comp.compare(p.verdi, verdi); // Sammenligner mellom den gitt verdien og p verdien
+            if (cmp < 0) p = p.venstre; // Umulig at like eller større verdier kommer til venstre i binæretrær
+            else {
+                if (cmp == 0)       // Ellers hvis cmp lik 0 legger vi til at verdien har duplikater i treet
+                    antallDuplikater++;
+            }
+        }
+        return antallDuplikater; // returnerer antall forekomster av verdier i treet
     }
+
 
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
