@@ -3,20 +3,21 @@ package no.oslomet.cs.algdat.Oblig3;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class SBinTre<T> {
     private static final class Node<T>   // en indre nodeklasse
     {
         private T verdi;                   // nodens verdi
-        private Node<T> venstre, høyre;    // venstre og høyre barn
+        private Node<T> venstre, hoyre;    // venstre og høyre barn
         private Node<T> forelder;          // forelder
 
         // konstruktør
         private Node(T verdi, Node<T> v, Node<T> h, Node<T> forelder) {
             this.verdi = verdi;
             venstre = v;
-            høyre = h;
+            hoyre = h;
             this.forelder = forelder;
         }
 
@@ -53,7 +54,7 @@ public class SBinTre<T> {
         while (p != null) {
             int cmp = comp.compare(verdi, p.verdi);
             if (cmp < 0) p = p.venstre;
-            else if (cmp > 0) p = p.høyre;
+            else if (cmp > 0) p = p.hoyre;
             else return true;
         }
 
@@ -83,7 +84,35 @@ public class SBinTre<T> {
     }
 
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
+
+        Node<T> p = rot,            // Setter p lik roten rot
+                q = null;            // sette q som er over p lik null
+        int cmp = 0;                  // Lager hjelpevariabel cmp
+
+        while (p != null)       // fortsetter helt til treet er ferdig og p er lik null
+        {
+            q = p;                                 // q er forelder til p
+            cmp = comp.compare(verdi,p.verdi);     // bruker komparatoren
+            if (cmp < 0){
+                p = p.venstre; // flytter p
+            }
+            else {
+               p = p.hoyre;            // Setter p på venstre siden dersom
+            }
+        }
+
+
+        // p er nå null, dvs. ute av treet, q er den siste vi passerte
+
+        p = new Node<>(verdi, q);                   // oppretter en ny node
+
+        if (q == null) rot = p;                  // p blir rotnode
+        else if (cmp < 0) q.venstre = p;         // venstre barn til q
+        else q.hoyre = p;                        // høyre barn til q
+
+        antall++;                                // én verdi mer i treet
+        return true;                             // vellykket innlegging
     }
 
     public boolean fjern(T verdi) {
@@ -95,7 +124,7 @@ public class SBinTre<T> {
     }
 
     public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        return 0;
     }
 
     public void nullstill() {
