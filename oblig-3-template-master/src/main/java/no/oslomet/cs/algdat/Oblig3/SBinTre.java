@@ -112,12 +112,75 @@ public class SBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (verdi == null) return false;  // Treet har ingen nullverdier
+
+        Node<T> p = rot, q = null;   // q skal være forelder til p
+
+        while (p != null)            // Leter etter verdi
+        {
+            int cmp = comp.compare(verdi,p.verdi);      // Sammenligner
+            if (cmp < 0) { q = p; p = p.venstre; }      // Går til venstre
+            else if (cmp > 0) { q = p; p = p.hoyre; }   // Går til høyre
+            else break;                                 // Den søkte verdien ligger i p
+        }
+        if (p == null) return false;   // Finner ikke verdi
+
+        if (p.venstre == null || p.hoyre == null)  // Hvis noden som skal fjernes har 0 eller 1 barn
+        {
+            Node<T> b = p.venstre != null ? p.venstre : p.hoyre;  // b er barnet til p noden
+            if (p == rot) {
+                rot = b;
+            }
+            else if (p == q.venstre){
+                q.venstre = b;
+                if(b != null){
+                    b.forelder = q;
+                }
+            }
+            else {
+                q.hoyre = b;
+                if(b != null){
+                    b.forelder = q;
+                }
+            }
+        }
+        else  // Hvis noden som skal fjernes har 2 barn
+        {
+            Node<T> s = p, r = p.hoyre;   // Finner neste i inorden
+            while (r.venstre != null)
+            {
+                s = r;                      // s er forelder til r
+                r = r.venstre;
+            }
+
+            p.verdi = r.verdi;   // Kopierer verdien i r til p
+
+            if (s != p) {
+                s.venstre = r.hoyre;
+                if(r.hoyre != null){
+                    r.hoyre.forelder = s;
+                }
+
+            }
+            else {
+                s.hoyre = r.hoyre;
+                if(r.hoyre != null){
+                    r.hoyre.forelder = s;
+                }
+            }
+        }
+
+        antall--;      // Det er nå én node mindre i treet
+        endringer++;   // Det er gjort en ny endring på treet
+        return true;
     }
 
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+        if(tom()) { return 0; }        //
+        int antallFjernet = 0;
+        while(fjern(verdi)) { antallFjernet++; }
+
+        return antallFjernet;    }
 
     public int antall(T verdi) {
 
