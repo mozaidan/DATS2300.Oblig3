@@ -187,11 +187,11 @@ public class SBinTre<T> {
         }
         Node<T> p = rot; //Initialiserer p som rot.
 
-        int stopper = antall; //Hjelpevariabel som skal oppdatere antall verdier.
+        int antallOppdatert = antall; //Hjelpevariabel som skal oppdatere antall verdier.
 
         p= førstePostorden(p); //Initialiserer den første verdien av p i postorden. Gjør slik at vi kan bruke nestePostorden.
 
-        while (stopper != 0){
+        while (antallOppdatert != 0){
             if (p != null) {
                 fjern(p.verdi); //bruker fjern() metoden og nullstiller for hver iterasjon der stopper ikke er null.
             }
@@ -201,7 +201,7 @@ public class SBinTre<T> {
             if (p != null) {
                 p = nestePostorden(p); //Bruker nestePostorden() for å gå videre i treet.
             }
-            stopper--; //Antall verdier oppdateres.
+            antallOppdatert--; //Antall verdier oppdateres.
         }
     }
 
@@ -220,11 +220,11 @@ public class SBinTre<T> {
     private static <T> Node<T> nestePostorden(Node<T> p) {
         if (p.forelder == null) return null; // Dersom vi kommer til rot noden
 
-        if (p == p.forelder.hoyre)
-            return p.forelder;
-        else if (p.forelder.hoyre == null)
-            return p.forelder;
-        else return førstePostorden(p.forelder.hoyre);
+        if (p == p.forelder.hoyre)    //hvis p er høyre barnet til sin sin foreldre
+            return p.forelder; //   foreldren til p er den neste
+        else if (p.forelder.hoyre == null) // ellers hvis høyrebarnet er null
+            return p.forelder; // da er p.venstre det ene barnet til p. foreldre og dermed er den neste
+        else return førstePostorden(p.forelder.hoyre); // Ellers er høyrebarnet til p de neste
 
     }
 
