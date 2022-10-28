@@ -176,11 +176,15 @@ public class SBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        if(tom()) { return 0; }        //
-        int antallFjernet = 0;
-        while(fjern(verdi)) { antallFjernet++; }
+        if(tom()) return 0;
 
-        return antallFjernet;    }
+        int antallFjernet = 0;
+        while(fjern(verdi)) {
+            antallFjernet++;
+        }
+
+        return antallFjernet;
+    }
 
     public int antall(T verdi) {
 
@@ -203,8 +207,33 @@ public class SBinTre<T> {
 
 
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+        if (antall == 0) { //Returnerer ingenting dersom antall er null
+            return;
+        }
+
+        Node<T> p = rot; //Initialiserer p som rot.
+        int oppdatertVerdier = antall; //Hjelpevariabel som skal oppdatere antall verdier.
+
+
+        p= førstePostorden(p); //Initialiserer den første verdien av p i postorden. Gjør slik at vi kan bruke nestePostorden.
+        while (oppdatertVerdier != 0){
+            if (p != null) {
+                fjern(p.verdi); //bruker fjern() metoden og nullstiller for hver iterasjon der stopper ikke er null.
+            }
+
+            if (p != null) {
+                p.verdi = null; //Oppdaterer p.verdi.
+            }
+
+
+            if (p != null) {
+                p = nestePostorden(p); //Bruker nestePostorden() for å gå videre i treet.
+            }
+
+
+
+            oppdatertVerdier--; //Antall verdier oppdateres.
+        }    }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
        Objects.requireNonNull(p);
