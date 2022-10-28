@@ -112,82 +112,58 @@ public class SBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        if (verdi == null) return false;  // Treet har ingen nullverdier
+        if (verdi == null) return false;  // treet har ingen nullverdier
 
         Node<T> p = rot, q = null;   // q skal være forelder til p
 
-        while (p != null)            // Leter etter verdi
+        while (p != null)            // leter etter verdi
         {
-            int cmp = comp.compare(verdi,p.verdi);      // Sammenligner
-            if (cmp < 0) { q = p; p = p.venstre; }      // Går til venstre
-            else if (cmp > 0) { q = p; p = p.hoyre; }   // Går til høyre
-            else break;                                 // Den søkte verdien ligger i p
+            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+            if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
+            else if (cmp > 0) { q = p; p = p.hoyre; }   // går til høyre
+            else break;    // den søkte verdien ligger i p
         }
-        if (p == null) return false;   // Finner ikke verdi
+        if (p == null) return false;   // finner ikke verdi
 
-        if (p.venstre == null || p.hoyre == null)  // Hvis noden som skal fjernes har 0 eller 1 barn
+        if (p.venstre == null || p.hoyre == null)  // Tilfelle 1) og 2)
         {
-            Node<T> b = p.venstre != null ? p.venstre : p.hoyre;  // b er barnet til p noden
-            if (p == rot) {
-                rot = b;
-            }
-            else if (p == q.venstre){
-                q.venstre = b;
-                if(b != null){
-                    b.forelder = q;
-                }
-            }
-            else {
-                q.hoyre = b;
-                if(b != null){
-                    b.forelder = q;
-                }
-            }
+            Node<T> b = p.venstre != null ? p.venstre : p.hoyre;  // b for barn
+            if (p == rot) rot = b;
+            else if (p == q.venstre) q.venstre = b;
+            else q.hoyre = b;
         }
-        else  // Hvis noden som skal fjernes har 2 barn
+        else  // Tilfelle 3)
         {
-            Node<T> s = p, r = p.hoyre;   // Finner neste i inorden
+            Node<T> s = p, r = p.hoyre;   // finner neste i inorden
             while (r.venstre != null)
             {
-                s = r;                      // s er forelder til r
+                s = r;    // s er forelder til r
                 r = r.venstre;
             }
 
-            p.verdi = r.verdi;   // Kopierer verdien i r til p
+            p.verdi = r.verdi;   // kopierer verdien i r til p
 
-            if (s != p) {
-                s.venstre = r.hoyre;
-                if(r.hoyre != null){
-                    r.hoyre.forelder = s;
-                }
-
-            }
-            else {
-                s.hoyre = r.hoyre;
-                if(r.hoyre != null){
-                    r.hoyre.forelder = s;
-                }
-            }
+            if (s != p) s.venstre = r.hoyre;
+            else s.hoyre = r.hoyre;
         }
 
-        antall--;      // Det er nå én node mindre i treet
-        endringer++;   // Det er gjort en ny endring på treet
-        return true;
-    }
+        endringer++;   // treet er endret
+        antall--;      // det er nå én node mindre i treet
+        return true;    }
 
     public int fjernAlle(T verdi) {
-        if(tom()) return 0;
+        if (tom()) return 0;
 
-        int antallFjernet = 0;
-        while(fjern(verdi)) {
-            antallFjernet++;
+        int verdiAntall = 0;
+
+        while (fjern(verdi)) {
+            verdiAntall++;
         }
-
-        return antallFjernet;
+        return verdiAntall;
     }
 
-    public int antall(T verdi) {
 
+    public int antall(T verdi) {
         Node<T> p = rot;
         int antallDuplikater = 0;
 
@@ -202,41 +178,35 @@ public class SBinTre<T> {
 
         }
         return antallDuplikater; // returnerer antall forekomster av verdier i treet
-
-    }
-
+            }
 
     public void nullstill() {
         if (antall == 0) { //Returnerer ingenting dersom antall er null
             return;
         }
-
         Node<T> p = rot; //Initialiserer p som rot.
-        int oppdatertVerdier = antall; //Hjelpevariabel som skal oppdatere antall verdier.
 
+        int stopper = antall; //Hjelpevariabel som skal oppdatere antall verdier.
 
         p= førstePostorden(p); //Initialiserer den første verdien av p i postorden. Gjør slik at vi kan bruke nestePostorden.
-        while (oppdatertVerdier != 0){
+
+        while (stopper != 0){
             if (p != null) {
                 fjern(p.verdi); //bruker fjern() metoden og nullstiller for hver iterasjon der stopper ikke er null.
             }
-
             if (p != null) {
                 p.verdi = null; //Oppdaterer p.verdi.
             }
-
-
             if (p != null) {
                 p = nestePostorden(p); //Bruker nestePostorden() for å gå videre i treet.
             }
+            stopper--; //Antall verdier oppdateres.
+        }
+    }
 
-
-
-            oppdatertVerdier--; //Antall verdier oppdateres.
-        }    }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-       Objects.requireNonNull(p);
+       Objects.requireNonNull(p); // Dersom
 
         while (true)
         {
@@ -258,16 +228,36 @@ public class SBinTre<T> {
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Node<T> p = rot; //Initialiserer p som rot.
+
+        Node<T> forste = førstePostorden(p); //Finner første node av metoden førstePostorden av p.
+        oppgave.utførOppgave(forste.verdi);
+
+        while (forste.forelder != null) { //While løkke som looper gjennom treet og oppdaterer neste verdi i postorden.
+
+            forste = nestePostorden(forste);
+            oppgave.utførOppgave(Objects.requireNonNull(forste).verdi);         	}
+
     }
 
     public void postordenRecursive(Oppgave<? super T> oppgave) {
-        postordenRecursive(rot, oppgave);
+
+        if (!tom()) {
+            //Dersom treet ikke er tomt, så kaller vi rekursivt på metoden, start ved rot.
+            postordenRecursive(rot, oppgave);
+        }
+
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+
+        if (p == null) { //Returnerer dersom p er null.
+            return;
+        }
+            postordenRecursive(p.venstre, oppgave); //Kaller rekursivt for p sitt venstrebarn
+            postordenRecursive(p.hoyre, oppgave);  //Kaller rekursivt for p sitt høyrebarn
+            oppgave.utførOppgave(p.verdi); //Kjører oppgaven
+        }
 
     public ArrayList<T> serialize() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
