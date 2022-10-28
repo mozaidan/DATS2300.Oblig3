@@ -2,15 +2,18 @@
 Denne oppgaven er en innlevering i Algoritmer og Datastrukturer. Oppgaven er levert av følgende student:
 
 Mouaz Zaidan, S366611, s366611@oslomet.no
+
 Hele obligen er løst ved hjelp fra kompendiet, og etter samarbeid med andre. Jeg har også brukt vidoene som ligger ut i andre sin nettside. De var veldig nyttige å se på. Ukesoppgaver var også en veldig god kilde.
 
-Warnings:
+# Warnings:
 Linje 13, intellij foreslår om gjør om gjøre noden (forelder) til final.
 Linje 37, intellij foreslår om å fjerne telleren endringer, det blir ikke brukt før vi kjører koden.
 Linje 48, intellij foreslår om å fjerne metoden inneholder(), dette er fordi vi brukte ikke den koden
 Linje 85, legginn() returner ingenting enn true, og derfor foreslår intellij om å endre til void..
 Siste to i linje 268, c og data er parametere som blir aldri brukt siden oppgave 5 mangler.
-Oppgavebeskrivelse
+
+
+# Oppgavebeskrivelse
 I oppgave 1 var det bare å kopiere koden fra kompendiet, ¨Det jeg gjorde var å erstatte ternary if med vanlig if og else setning slik at koden skal være litt mer forståelig. For at koden skulle fungere, måtte jeg legge til q i new Node<> slik at ny noden bli verdien til q.
 
 I oppgave 2 fikk jeg litt hjelp fra kompendiet, vi oppretter en teller som legger til 1 hver gang vi oppdager en gjentatt eller duplikat av en gitt verdi. Vi bruker while-løkke som fortsetter helt til vi kommer til null, I denne løkken er det best å bruke comperator slik at vi bruker retur verdiene fra comparatoren til å skille alle tilfellene. Hver gang vi får -1, betyr det at verdien er mindre enn p, og dermed legges den til venstre. om den er lik p får vi 0 så legges den til høyre.
