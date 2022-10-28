@@ -108,7 +108,8 @@ public class SBinTre<T> {
         else if (cmp < 0) q.venstre = p;         // venstre barn til q
         else q.hoyre = p;                        // høyre barn til q
 
-        antall++;                                // én verdi mer i treet
+        antall++; // én verdi mer i treet
+
         return true;                             // vellykket innlegging
     }
 

@@ -8,6 +8,14 @@ Hele obligen er løst ved hjelp fra kompendiet, og etter samarbeid
 med andre. Jeg har også brukt vidoene som ligger ut i andre sin nettside.
 De var veldig nyttige å se på. Ukesoppgaver var også en veldig god kilde.
 
+
+# Warnings:
+- Linje 13, intellij foreslår om gjør om gjøre noden (forelder) til final.
+- Linje 37, intellij foreslår om å fjerne telleren endringer, det blir ikke brukt før vi kjører koden.
+- Linje 48, intellij foreslår om å fjerne metoden inneholder(), dette er fordi vi brukte ikke den koden
+- Linje 85, legginn() returner ingenting enn true, og derfor foreslår intellij om å endre til void..
+- Siste to i linje 268, c og data er parametere som blir aldri brukt siden oppgave 5 mangler.
+
 # Oppgavebeskrivelse
 
 I oppgave 1 var det bare å kopiere koden fra kompendiet,
