@@ -50,7 +50,7 @@ public class SBinTre<T> {
 
         Node<T> p = rot;
 
-        while (p != null) {
+        while (p != null) { //Dersom p ikke er lik null
             int cmp = comp.compare(verdi, p.verdi);
             if (cmp < 0) p = p.venstre;
             else if (cmp > 0) p = p.hoyre;
@@ -97,11 +97,12 @@ public class SBinTre<T> {
                 p = p.venstre; // flytter p
             }
             else {
-               p = p.hoyre;            // Setter p på venstre siden dersom
+               p = p.hoyre;      // Setter p på venstre siden dersom verdien er større
+                                    // enn forelder noden q
             }
         }
 
-        p = new Node<>(verdi, q);                   // oppretter en ny node
+        p = new Node<>(verdi, q);           // oppretter en ny node og setter verdien til q
 
         if (q == null) rot = p;                  // p blir rotnode
         else if (cmp < 0) q.venstre = p;         // venstre barn til q
@@ -165,7 +166,7 @@ public class SBinTre<T> {
 
     public int antall(T verdi) {
         Node<T> p = rot;
-        int antallDuplikater = 0;
+        int antallDuplikater = 0; //Teller
 
         while (p != null) {
             int cmp = comp.compare(verdi, p.verdi); // Sammenligner mellom den gitt verdien og p verdien
@@ -206,9 +207,9 @@ public class SBinTre<T> {
 
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-       Objects.requireNonNull(p); // Dersom
+       Objects.requireNonNull(p); // sikre at det ikke går inn en nullreferanse
 
-        while (true)
+        while (true) // Så langt det er true
         {
             if (p.venstre != null) p = p.venstre;
             else if (p.hoyre != null) p = p.hoyre;
@@ -217,7 +218,7 @@ public class SBinTre<T> {
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        if (p.forelder == null) return null;
+        if (p.forelder == null) return null; // Dersom vi kommer til rot noden
 
         if (p == p.forelder.hoyre)
             return p.forelder;
@@ -233,7 +234,7 @@ public class SBinTre<T> {
         Node<T> forste = førstePostorden(p); //Finner første node av metoden førstePostorden av p.
         oppgave.utførOppgave(forste.verdi);
 
-        while (forste.forelder != null) { //While løkke som looper gjennom treet og oppdaterer neste verdi i postorden.
+        while (forste.forelder != null) { //While-løkke som looper gjennom treet og oppdaterer neste verdi i postorden.
 
             forste = nestePostorden(forste);
             oppgave.utførOppgave(Objects.requireNonNull(forste).verdi);         	}
